@@ -12,7 +12,7 @@ import java.util.concurrent.Future;
 @Ignore
 public class GeneratorAsyncTest {
 
-    public GeneratorAsync generatorAsync;
+    private GeneratorAsync generatorAsync;
 
     @Before
     public void beforeEach() {

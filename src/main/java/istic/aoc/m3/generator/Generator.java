@@ -10,4 +10,6 @@ public interface Generator {
      * @return Long jamais null
      */
     Long getValue();
+    
+    void setValue(long value);
 }

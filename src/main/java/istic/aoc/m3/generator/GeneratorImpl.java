@@ -16,6 +16,8 @@ public class GeneratorImpl implements Generator, Subject, Runnable {
 
     private long sequence = 0;
 
+    private boolean isRunning = true;
+
     public GeneratorImpl() {
 
         // Dès que les futures
@@ -51,10 +53,14 @@ public class GeneratorImpl implements Generator, Subject, Runnable {
         this.observers.remove(o);
     }
 
+    public void stop() {
+        this.isRunning = false;
+    }
+
     @Override
     public void run() {
         List<Future<Void>> enAttentes = new ArrayList<>();
-        while (true) {
+        while (this.isRunning) {
             if (enAttentes.stream().allMatch(Future::isDone)) {
 
                 try {
@@ -66,5 +72,6 @@ public class GeneratorImpl implements Generator, Subject, Runnable {
                 enAttentes = this.observers.stream().map((it) -> it.update(this)).collect(Collectors.toList());
             }
         }
+        this.isRunning = true;
     }
 }

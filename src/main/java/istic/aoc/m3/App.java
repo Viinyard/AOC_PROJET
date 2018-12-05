@@ -1,6 +1,7 @@
 package istic.aoc.m3;
 
 import java.awt.*;
+import java.awt.event.*;
 
 import javax.swing.*;
 
@@ -68,8 +69,31 @@ public class App {
 
         controlContainer.setLayout(new GridLayout(1, 2));
 
-        controlContainer.add(new JButton("start"));
-        controlContainer.add(new JButton("stop"));
+
+
+        final JButton start = new JButton("start");
+        start.addActionListener(new ActionListener() {
+            Thread t;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(t == null || !t.isAlive()) {
+                    t = new Thread(generator);
+                    t.start();
+                } else {
+
+                }
+
+            }
+        });
+        controlContainer.add(start);
+        final JButton stop = new JButton("stop");
+        stop.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generator.stop();
+            }
+        });
+        controlContainer.add(stop);
 
         contentPane.add(controlContainer, BorderLayout.SOUTH);
 
@@ -80,7 +104,7 @@ public class App {
         frame.pack();
         frame.setVisible(true);
 
-        new Thread(generator).start();
+
     }
 
 }

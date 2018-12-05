@@ -8,39 +8,32 @@ import java.util.stream.Collectors;
 import istic.aoc.m3.observer.Observer;
 import istic.aoc.m3.observer.Subject;
 
-public class GeneratorImpl implements Generator, Subject {
+public class GeneratorImpl implements Generator, Subject, Runnable {
 
-    private final List<Observer> observers = new ArrayList<>();
+    private final List<Observer<Void>> observers = new ArrayList<>();
+
+    private List<Future<Void>> allObserversRecup = new ArrayList<>();
 
     private long sequence = 0;
 
-    GeneratorImpl() {
+    public GeneratorImpl() {
 
         // Dès que les futures
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Future<Void>> enAttentes = new ArrayList<>();
-                while(true) {
-                    if(enAttentes.stream().allMatch(Future::isDone)) {
 
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        sequence = sequence + 1;
-                        enAttentes = observers.stream()
-                                .map((it) -> it.update(this))
-                                .collect(Collectors.toList());
-                    }
-                }
+/*
+        while (true) {
+            if (this.allObserversRecup.isEmpty() || this.allObserversRecup.stream().allMatch(Future::isDone)) {
+                nextValue();
+                allObserversRecup = observers.stream().map(it -> it.update(this)).collect(Collectors.toList());
             }
-        }) {
 
         }
+        */
+    }
 
+    private void nextValue() {
+        this.sequence = this.sequence + 1;
     }
 
     @Override
@@ -56,5 +49,22 @@ public class GeneratorImpl implements Generator, Subject {
     @Override
     public void detach(Observer o) {
         this.observers.remove(o);
+    }
+
+    @Override
+    public void run() {
+        List<Future<Void>> enAttentes = new ArrayList<>();
+        while (true) {
+            if (enAttentes.stream().allMatch(Future::isDone)) {
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                this.sequence = this.sequence + 1;
+                enAttentes = this.observers.stream().map((it) -> it.update(this)).collect(Collectors.toList());
+            }
+        }
     }
 }

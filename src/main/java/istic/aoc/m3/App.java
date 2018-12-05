@@ -10,10 +10,9 @@ import java.awt.*;
  * Hello world!
  *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
+public class App {
+
+    public static void main( String[] args ){
         JFrame frame = new JFrame("test");
         JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());

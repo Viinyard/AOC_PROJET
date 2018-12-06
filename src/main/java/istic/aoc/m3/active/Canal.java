@@ -18,7 +18,6 @@ import istic.aoc.m3.observer.Subject;
  * @author VinYarD
  * created : 17/10/2018, 14:41
  */
-
 public class Canal implements Observer, Subject {
 
     private final Logger log = LoggerFactory.getLogger(Canal.class);
@@ -30,10 +29,9 @@ public class Canal implements Observer, Subject {
 
     @Override
     public Future<Void> update(Generator g) {
-
         log.info("Mise à jour du canal.");
 
-        return (Future) executorService.schedule(() -> {
+        return (Future<Void>) executorService.schedule(() -> {
             observerList.forEach(o -> o.update(g));
         }, 2, TimeUnit.SECONDS);
     }

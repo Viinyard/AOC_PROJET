@@ -63,20 +63,39 @@ public class App {
             generator.attach(canal);
         }
 
-        contentPane.add(afficheurContainer);
+        contentPane.add(afficheurContainer, BorderLayout.CENTER);
+
+        // les boutons radio pour la diffusion
+        {
+            final JPanel diffusionPanel = new JPanel();
+            diffusionPanel.setLayout(new GridLayout(1, 3));
+
+            // diffusion atomique
+            final JRadioButton radioAtomique = new JRadioButton("Atomique");
+            diffusionPanel.add(radioAtomique);
+
+            // diffusion sequentielle
+            final JRadioButton radioSequentielle = new JRadioButton("Sequentielle");
+            diffusionPanel.add(radioSequentielle);
+
+            // diffusion causale
+            final JRadioButton radioCausale = new JRadioButton("Causale");
+            diffusionPanel.add(radioCausale);
+
+            contentPane.add(diffusionPanel, BorderLayout.NORTH);
+        }
 
         JPanel controlContainer = new JPanel();
 
         controlContainer.setLayout(new GridLayout(1, 2));
 
-
-
         final JButton start = new JButton("start");
         start.addActionListener(new ActionListener() {
             Thread t;
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(t == null || !t.isAlive()) {
+                if (t == null || !t.isAlive()) {
                     t = new Thread(generator);
                     t.start();
                 } else {
@@ -103,7 +122,6 @@ public class App {
         frame.setLocationRelativeTo(null);
         frame.pack();
         frame.setVisible(true);
-
 
     }
 

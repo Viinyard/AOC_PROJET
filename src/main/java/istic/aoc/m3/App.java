@@ -32,9 +32,10 @@ public class App {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("test");
+        final JFrame frame = new JFrame("test");
         frame.setMinimumSize(new Dimension(400, 400));
-        JPanel contentPane = new JPanel();
+
+        final JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
 
         // les boutons radio pour la diffusion
@@ -63,6 +64,7 @@ public class App {
             diffusionPanel.add(radioCausale);
 
             contentPane.add(diffusionPanel, BorderLayout.NORTH);
+
         }
 
         JPanel afficheurContainer = new JPanel();
@@ -115,7 +117,10 @@ public class App {
 
         controlContainer.setLayout(new GridLayout(1, 2));
 
-        final JButton start = new JButton("start");
+        final JButton start = new JButton("Start");
+        final JButton stop = new JButton("Stop");
+        stop.setEnabled(false);
+
         start.addActionListener(new ActionListener() {
             Thread t;
 
@@ -124,19 +129,17 @@ public class App {
                 if (t == null || !t.isAlive()) {
                     t = new Thread(generator);
                     t.start();
-                } else {
-
+                    start.setEnabled(!start.isEnabled());
+                    stop.setEnabled(!stop.isEnabled());
                 }
 
             }
         });
         controlContainer.add(start);
-        final JButton stop = new JButton("stop");
-        stop.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                generator.stop();
-            }
+        stop.addActionListener(e -> {
+            generator.stop();
+            start.setEnabled(!start.isEnabled());
+            stop.setEnabled(!stop.isEnabled());
         });
         controlContainer.add(stop);
 

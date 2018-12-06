@@ -11,5 +11,4 @@ public interface Generator {
      */
     Long getValue();
     
-//    void setValue(long value);
 }

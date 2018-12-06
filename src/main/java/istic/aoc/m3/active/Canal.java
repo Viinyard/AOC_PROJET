@@ -19,13 +19,11 @@ import istic.aoc.m3.observer.Subject;
  * created : 17/10/2018, 14:41
  */
 
-public class Canal implements Observer, Subject, Generator {
+public class Canal implements Observer, Subject {
 
     private final Logger log = LoggerFactory.getLogger(Canal.class);
 
     private final List<Observer> observerList = new ArrayList<>();
-
-    private long value;
 
     // doit obtenir le bon scheduler
     private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1);
@@ -33,12 +31,11 @@ public class Canal implements Observer, Subject, Generator {
     @Override
     public Future<Void> update(Generator g) {
 
-        final Future futureValue = executorService.schedule(() -> {
+        log.info("Mise à jour du canal.");
+
+        return (Future) executorService.schedule(() -> {
             observerList.forEach(o -> o.update(g));
         }, 2, TimeUnit.SECONDS);
-
-        log.info("Canal retourne un Future<Long>...");
-        return futureValue;
     }
 
     @Override
@@ -49,10 +46,5 @@ public class Canal implements Observer, Subject, Generator {
     @Override
     public void detach(Observer o) {
         this.observerList.remove(o);
-    }
-
-    @Override
-    public Long getValue() {
-        return this.value;
     }
 }

@@ -6,6 +6,9 @@ import java.util.concurrent.Future;
 
 import javax.swing.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import istic.aoc.m3.generator.Generator;
 import istic.aoc.m3.observer.Observer;
 
@@ -15,6 +18,8 @@ import istic.aoc.m3.observer.Observer;
  */
 
 public class Afficheur extends JPanel implements Observer<Void> {
+
+    private static final Logger log = LoggerFactory.getLogger(Afficheur.class);
 
     private long value;
     private Color color;
@@ -40,6 +45,8 @@ public class Afficheur extends JPanel implements Observer<Void> {
 
         this.value = g.getValue();
         this.repaint();
+
+        log.info("Nouvelle valeur pour l'afficheur : " + this.value);
 
         return null;
     }

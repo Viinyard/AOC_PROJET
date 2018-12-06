@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import istic.aoc.m3.observer.Observer;
 import istic.aoc.m3.observer.Subject;
 
 public class GeneratorImpl implements Generator, Subject, Runnable {
 
-    private final List<Observer<Void>> observers = new ArrayList<>();
+    private static final Logger log = LoggerFactory.getLogger(GeneratorImpl.class);
 
-    private List<Future<Void>> allObserversRecup = new ArrayList<>();
+    private final List<Observer<Void>> observers = new ArrayList<>();
 
     private long sequence = 0;
 
@@ -20,22 +23,11 @@ public class GeneratorImpl implements Generator, Subject, Runnable {
 
     public GeneratorImpl() {
 
-        // Dès que les futures
-
-
-/*
-        while (true) {
-            if (this.allObserversRecup.isEmpty() || this.allObserversRecup.stream().allMatch(Future::isDone)) {
-                nextValue();
-                allObserversRecup = observers.stream().map(it -> it.update(this)).collect(Collectors.toList());
-            }
-
-        }
-        */
     }
 
     private void nextValue() {
         this.sequence = this.sequence + 1;
+        log.info("Nouvelle valeur : " + this.sequence);
     }
 
     @Override
@@ -62,14 +54,10 @@ public class GeneratorImpl implements Generator, Subject, Runnable {
         List<Future<Void>> enAttentes = new ArrayList<>();
         while (this.isRunning) {
             if (enAttentes.stream().allMatch(Future::isDone)) {
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                this.sequence = this.sequence + 1;
-                enAttentes = this.observers.stream().map((it) -> it.update(this)).collect(Collectors.toList());
+                this.nextValue();
+                enAttentes = this.observers.stream()
+                        .map((it) -> it.update(this))
+                        .collect(Collectors.toList());
             }
         }
         this.isRunning = true;

@@ -50,6 +50,7 @@ public class App {
             radioAtomique.addActionListener(x -> App.definirDiffusion(Diffusion.ATOMIQUE));
             bg.add(radioAtomique);
             diffusionPanel.add(radioAtomique);
+            radioAtomique.doClick();
 
             // diffusion sequentielle
             final JRadioButton radioSequentielle = new JRadioButton("Sequentielle");

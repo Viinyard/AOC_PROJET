@@ -18,7 +18,7 @@ import istic.aoc.m3.observer.Subject;
 /**
  * @author VinYarD
  * created : 17/10/2018, 14:41
- */
+     */
 public class Canal implements Observer, Subject {
 
     private final Logger log = LoggerFactory.getLogger(Canal.class);

@@ -22,10 +22,23 @@ public class Afficheur extends JPanel implements Observer<Void> {
     private static final Logger log = LoggerFactory.getLogger(Afficheur.class);
 
     private long value;
-    private Color color;
+    private final Color color;
+    private final String readableColor;
 
     public Afficheur(Color color) {
         this.color = color;
+        if (this.color == Color.RED) {
+            this.readableColor = "Red  ";
+        } else if (this.color == Color.BLUE) {
+            this.readableColor = "Blue ";
+        } else if (this.color == Color.WHITE) {
+            this.readableColor = "White";
+        } else if (this.color == Color.GREEN) {
+            this.readableColor = "Green";
+        } else {
+            this.readableColor = "None ";
+        }
+
         this.setOpaque(true);
     }
 
@@ -46,7 +59,7 @@ public class Afficheur extends JPanel implements Observer<Void> {
         this.value = g.getValue();
         this.repaint();
 
-        log.info("Nouvelle valeur pour l'afficheur : " + this.value);
+        log.info("Nouvelle valeur pour l'afficheur {} : {}", this.readableColor, this.value);
 
         return null;
     }

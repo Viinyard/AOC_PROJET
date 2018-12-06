@@ -2,6 +2,7 @@ package istic.aoc.m3.active;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -29,11 +30,14 @@ public class Canal implements Observer, Subject {
 
     @Override
     public Future<Void> update(Generator g) {
-        log.info("Mise à jour du canal.");
+
+        final int nombreSecondes = new Random().nextInt(8) + 2;
+
+        log.info("Mise à jour du canal qui ajoute {} seconde{} de latence", nombreSecondes, nombreSecondes > 1 ? "s" : "");
 
         return (Future<Void>) executorService.schedule(() -> {
             observerList.forEach(o -> o.update(g));
-        }, 2, TimeUnit.SECONDS);
+        }, nombreSecondes, TimeUnit.SECONDS);
     }
 
     @Override

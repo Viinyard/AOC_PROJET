@@ -5,8 +5,12 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import istic.aoc.m3.active.Canal;
 import istic.aoc.m3.afficheur.Afficheur;
+import istic.aoc.m3.diffusion.Diffusion;
 import istic.aoc.m3.generator.GeneratorImpl;
 
 /**
@@ -14,8 +18,22 @@ import istic.aoc.m3.generator.GeneratorImpl;
  */
 public class App {
 
+    private static final Logger log = LoggerFactory.getLogger(App.class);
+
+    public static Diffusion diffusionSelectionee;
+
+    public static void definirDiffusion(final Diffusion diffusion) {
+        // il est inutile de continuer plus loin
+        if (diffusion == App.diffusionSelectionee) {
+            return;
+        }
+        log.info("Changement de diffusion : {} -> {}", App.diffusionSelectionee, diffusion);
+        App.diffusionSelectionee = diffusion;
+    }
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("test");
+        frame.setMinimumSize(new Dimension(400, 400));
         JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
 
@@ -24,21 +42,28 @@ public class App {
             final JPanel diffusionPanel = new JPanel();
             diffusionPanel.setLayout(new GridLayout(1, 3));
 
+            final ButtonGroup bg = new ButtonGroup();
+
             // diffusion atomique
             final JRadioButton radioAtomique = new JRadioButton("Atomique");
+            radioAtomique.addActionListener(x -> App.definirDiffusion(Diffusion.ATOMIQUE));
+            bg.add(radioAtomique);
             diffusionPanel.add(radioAtomique);
 
             // diffusion sequentielle
             final JRadioButton radioSequentielle = new JRadioButton("Sequentielle");
+            radioSequentielle.addActionListener(x -> App.definirDiffusion(Diffusion.SEQUENTIELLE));
+            bg.add(radioSequentielle);
             diffusionPanel.add(radioSequentielle);
 
             // diffusion causale
             final JRadioButton radioCausale = new JRadioButton("Causale");
+            radioCausale.addActionListener(x -> App.definirDiffusion(Diffusion.CAUSALE));
+            bg.add(radioCausale);
             diffusionPanel.add(radioCausale);
 
             contentPane.add(diffusionPanel, BorderLayout.NORTH);
         }
-
 
         JPanel afficheurContainer = new JPanel();
 

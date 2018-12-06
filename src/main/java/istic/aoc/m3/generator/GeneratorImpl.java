@@ -51,6 +51,8 @@ public class GeneratorImpl implements Generator, Subject, Runnable {
 
     @Override
     public void run() {
+
+
         List<Future<Void>> enAttentes = new ArrayList<>();
         while (this.isRunning) {
             if (enAttentes.stream().allMatch(Future::isDone)) {

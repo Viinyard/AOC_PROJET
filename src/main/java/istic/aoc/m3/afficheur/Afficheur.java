@@ -22,6 +22,7 @@ public class Afficheur extends JPanel implements Observer {
 	public Afficheur(Color color) {
 		this.color = color;
 		this.setOpaque(true);
+		this.setPreferredSize(new Dimension(50, 50));
 	}
 	
 	public void paintComponent(Graphics g) {

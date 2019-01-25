@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-public class AtomiqueStrategy implements DiffusionStrategy {
+public class CausaleStrategy implements DiffusionStrategy {
     
     private Generator generator;
     private Observable<ObserverAsync<Generator>> observable;
@@ -22,19 +22,8 @@ public class AtomiqueStrategy implements DiffusionStrategy {
     
     @Override
     public void execute() {
-        
-        List<Future<Void>> enAttentes = this.observable.getObservers().stream()
-            .map((it) -> it.update(this.generator))
-            .collect(Collectors.toList());
-    
-        enAttentes.forEach(it -> {
-            try {
-                it.get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-        });
+        this.observable.getObservers().stream().forEach((it) -> it.update(this.generator));
     }
+    
+    
 }

@@ -8,9 +8,10 @@ import java.util.concurrent.Future;
 public interface GeneratorAsync {
 
     /**
-     * Fournit un future d'un long jamais null
+     * Fournit un future d'un long.
      *
      * @return Future de long
      */
     Future<Long> getValue();
+    
 }

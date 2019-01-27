@@ -39,13 +39,18 @@
 ### Patrons de conceptions utilisés
 
 #### Proxy
-```java
+```
+```
+
+
+#### Observer
+```
 ```
 #### Strategy
-```java
+```
 Le patron de conception strategy permet de choisir une application en fonction d'un context.
 Dans notre cas l'interface DiffusionStrategy permet de spécifier les méthodes communes à chaques implémentation. 
 ```
-![ClassUpdate](./schema/png/schema_strategy.png)
+![Pattern strategy](./schema/png/schema_strategy.png)
 #### Active Object
 #### 

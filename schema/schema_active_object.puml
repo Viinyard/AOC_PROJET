@@ -1,0 +1,76 @@
+@startuml
+hide empty members
+allow_mixing
+
+usecase "Update: ActiveObject" as uao
+
+class Canal {
+}
+
+class Afficheur {
+    + update(Generator generator) : void
+}
+
+class RunnableGenerator {
+}
+
+
+interface Generator {
+    + getValue() : long
+}
+
+interface GeneratorAsync {
+    + getValue() : Future<Long>
+}
+
+interface Observable {
+
+}
+
+interface Observer<T> {
+    + update(T t) : void
+
+}
+
+interface ObserverAsync {
+
+}
+
+
+package java {
+
+    package util.concurrent {
+
+        interface Future<T> {
+
+        }
+
+        interface ScheduledExecutorService {
+
+        }
+    }
+
+    package java.lang{
+        interface Runnable {
+
+        }
+    }
+
+}
+
+uao ..> Canal : Proxy
+uao ..> GeneratorAsync : Service
+uao ..> Observer : Client
+uao ..> Future : future
+uao ..> ScheduledExecutorService : Scheduler
+uao ..> Runnable : method invocation
+uao ..> RunnableGenerator : concreate method invocation
+
+GeneratorAsync <|.. Canal
+Observable <|.. Canal
+ObserverAsync <|.. Canal
+
+Observer <|.. Afficheur
+Runnable <|.. RunnableGenerator
+
+@enduml

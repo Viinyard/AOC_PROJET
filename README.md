@@ -18,7 +18,6 @@
   ```bash
   mvn compile
   ```
-
 ### Executer les tests
   ```bash
   mvn test
@@ -38,14 +37,12 @@
 
 ### Patrons de conceptions utilisés
 
-#### Proxy
-```
-```
-
+#### Active Object
+![Pattern observer sync](./schema/png/schema_active_object.png)
 
 #### Observer
 ```
-Nous avons employé le patron de conception Observer dans 2 version, une synchrone et l'autre asynchrone.
+Nous avons employé le patron de conception Observer dans 2 versions, une synchrone et l'autre asynchrone.
 ```
 ![Pattern observer sync](./schema/png/schema_observer_synchrone.png)
 ![Pattern observer sync](./schema/png/schema_observer_asynchrone.png)

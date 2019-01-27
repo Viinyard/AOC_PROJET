@@ -3,15 +3,18 @@ package istic.aoc.m3.active;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.*;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import istic.aoc.m3.generator.Generator;
 import istic.aoc.m3.generator.GeneratorAsync;
 import istic.aoc.m3.observer.Observable;
 import istic.aoc.m3.observer.Observer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import istic.aoc.m3.observer.ObserverAsync;
 
 /**

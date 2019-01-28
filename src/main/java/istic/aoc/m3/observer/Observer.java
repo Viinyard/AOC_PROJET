@@ -1,10 +1,12 @@
 package istic.aoc.m3.observer;
 
-import java.util.concurrent.Future;
+/**
+ * @author VinYarD
+ * created : 22/01/2019, 14:24
+ */
 
-import istic.aoc.m3.generator.Generator;
 
 public interface Observer<T> {
-
-    Future<T> update(final Generator g);
+	
+	void update(T t);
 }

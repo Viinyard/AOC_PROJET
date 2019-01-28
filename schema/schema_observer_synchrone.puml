@@ -1,0 +1,23 @@
+@startuml
+
+'Observer synchrone
+
+interface Observer<T> {
+    + update(T t) : void
+}
+
+interface Observable<T> {
+    + addObserver(T t) : void
+    + removeObserver(T o) : void
+    + notifyObservers() : void
+    + getObservers() : List<T>
+}
+
+Observable o-- Observer
+
+Observer <|-- Afficheur
+
+Observable <|-- Canal
+Observable <|-- GeneratorImpl
+
+@enduml

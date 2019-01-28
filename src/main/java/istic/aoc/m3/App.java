@@ -5,12 +5,14 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
+import istic.aoc.m3.diffusion.AtomiqueStrategy;
+import istic.aoc.m3.diffusion.CausaleStrategy;
+import istic.aoc.m3.diffusion.SequentielStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import istic.aoc.m3.active.Canal;
 import istic.aoc.m3.afficheur.Afficheur;
-import istic.aoc.m3.diffusion.Diffusion;
 import istic.aoc.m3.generator.GeneratorImpl;
 
 /**
@@ -20,23 +22,15 @@ public class App {
 
     private static final Logger log = LoggerFactory.getLogger(App.class);
 
-    public static Diffusion diffusionSelectionee;
-
-    public static void definirDiffusion(final Diffusion diffusion) {
-        // il est inutile de continuer plus loin
-        if (diffusion == App.diffusionSelectionee) {
-            return;
-        }
-        log.info("Changement de diffusion : {} -> {}", App.diffusionSelectionee, diffusion);
-        App.diffusionSelectionee = diffusion;
-    }
 
     public static void main(String[] args) {
-        final JFrame frame = new JFrame("test");
+        final JFrame frame = new JFrame("Active Object Generator");
         frame.setMinimumSize(new Dimension(400, 400));
 
         final JPanel contentPane = new JPanel();
         contentPane.setLayout(new BorderLayout());
+    
+        final GeneratorImpl generator = new GeneratorImpl();
 
         // les boutons radio pour la diffusion
         {
@@ -47,20 +41,20 @@ public class App {
 
             // diffusion atomique
             final JRadioButton radioAtomique = new JRadioButton("Atomique");
-            radioAtomique.addActionListener(x -> App.definirDiffusion(Diffusion.ATOMIQUE));
+            radioAtomique.addActionListener(x -> generator.setDiffusionStrategy(new AtomiqueStrategy()));
             bg.add(radioAtomique);
             diffusionPanel.add(radioAtomique);
             radioAtomique.doClick();
 
             // diffusion sequentielle
             final JRadioButton radioSequentielle = new JRadioButton("Sequentielle");
-            radioSequentielle.addActionListener(x -> App.definirDiffusion(Diffusion.SEQUENTIELLE));
+            radioSequentielle.addActionListener(x -> generator.setDiffusionStrategy(new SequentielStrategy()));
             bg.add(radioSequentielle);
             diffusionPanel.add(radioSequentielle);
 
             // diffusion causale
             final JRadioButton radioCausale = new JRadioButton("Causale");
-            radioCausale.addActionListener(x -> App.definirDiffusion(Diffusion.CAUSALE));
+            radioCausale.addActionListener(x -> generator.setDiffusionStrategy(new CausaleStrategy()));
             bg.add(radioCausale);
             diffusionPanel.add(radioCausale);
 
@@ -72,44 +66,43 @@ public class App {
 
         afficheurContainer.setLayout(new GridLayout(2, 2));
 
-        final GeneratorImpl generator = new GeneratorImpl();
 
         {
 
-            final Afficheur afficheur = new Afficheur(Color.WHITE);
+            final Afficheur afficheur = new Afficheur(Color.WHITE, "Blanc");
             afficheurContainer.add(afficheur);
 
             final Canal canal = new Canal();
-            canal.attach(afficheur);
+            canal.addObserver(afficheur);
 
-            generator.attach(canal);
+            generator.addObserver(canal);
         }
         {
-            final Afficheur afficheur = new Afficheur(Color.RED);
+            final Afficheur afficheur = new Afficheur(Color.RED, "Rouge");
             afficheurContainer.add(afficheur);
 
             final Canal canal = new Canal();
-            canal.attach(afficheur);
+            canal.addObserver(afficheur);
 
-            generator.attach(canal);
+            generator.addObserver(canal);
         }
         {
-            final Afficheur afficheur = new Afficheur(Color.GREEN);
+            final Afficheur afficheur = new Afficheur(Color.GREEN, "Vert");
             afficheurContainer.add(afficheur);
 
             final Canal canal = new Canal();
-            canal.attach(afficheur);
+            canal.addObserver(afficheur);
 
-            generator.attach(canal);
+            generator.addObserver(canal);
         }
         {
-            final Afficheur afficheur = new Afficheur(Color.BLUE);
+            final Afficheur afficheur = new Afficheur(Color.BLUE, "Bleu");
             afficheurContainer.add(afficheur);
 
             final Canal canal = new Canal();
-            canal.attach(afficheur);
+            canal.addObserver(afficheur);
 
-            generator.attach(canal);
+            generator.addObserver(canal);
         }
 
         contentPane.add(afficheurContainer, BorderLayout.CENTER);
@@ -122,13 +115,15 @@ public class App {
         final JButton stop = new JButton("Stop");
         stop.setEnabled(false);
 
+        RunnableGenerator runnableGenerator = new RunnableGenerator(generator);
+        
         start.addActionListener(new ActionListener() {
             Thread t;
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (t == null || !t.isAlive()) {
-                    t = new Thread(generator);
+                    t = new Thread(runnableGenerator);
                     t.start();
                     start.setEnabled(!start.isEnabled());
                     stop.setEnabled(!stop.isEnabled());
@@ -138,7 +133,7 @@ public class App {
         });
         controlContainer.add(start);
         stop.addActionListener(e -> {
-            generator.stop();
+					runnableGenerator.stop();
             start.setEnabled(!start.isEnabled());
             stop.setEnabled(!stop.isEnabled());
         });

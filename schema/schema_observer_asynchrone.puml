@@ -1,0 +1,29 @@
+@startuml
+
+'Observer asynchrone
+
+package java.util.concurrent {
+    interface Future<T>{
+
+    }
+}
+
+interface ObserverAsync<T> {
+    + update(T t) : Future<T>
+}
+
+interface Observable<T> {
+    + addObserver(T t) : void
+    + removeObserver(T o) : void
+    + notifyObservers() : void
+    + getObservers() : List<T>
+}
+
+Observable o-- ObserverAsync
+
+ObserverAsync <|-- Canal
+
+Observable <|-- Canal
+Observable <|-- GeneratorImpl
+
+@enduml

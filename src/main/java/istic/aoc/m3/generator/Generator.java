@@ -1,14 +1,18 @@
 package istic.aoc.m3.generator;
 
-/**
- * Générateur synchrone
- */
-public interface Generator {
+import istic.aoc.m3.diffusion.DiffusionStrategy;
 
-    /**
-     * Permet d'obtenir la valeur courante du générateur
-     * @return Long jamais null
-     */
-    Long getValue();
-    
+/**
+ * @author VinYarD
+ * created : 22/01/2019, 11:04
+ */
+
+
+public interface Generator {
+	
+	long getValue();
+	
+	void setDiffusionStrategy(DiffusionStrategy strategy);
+	
+	void setValue(long value);
 }

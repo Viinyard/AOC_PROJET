@@ -10,13 +10,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
-public class SequentielStrategy implements DiffusionStrategy, Generator {
+public class SequentielStrategy implements DiffusionStrategy {
     
     private Generator generator;
     private Observable<ObserverAsync<Generator>> observable;
     List<Future<Void>> enAttentes;
-    
-    private long value;
     
     @Override
     public void configure(Generator generator, Observable<ObserverAsync<Generator>> observable) {
@@ -27,27 +25,29 @@ public class SequentielStrategy implements DiffusionStrategy, Generator {
     
     @Override
     public void execute() {
-        this.value = this.generator.getValue();
         if(this.enAttentes.stream().allMatch(f -> f.isDone())) {
             this.enAttentes = this.observable.getObservers().stream()
-                .map((it) -> it.update(this))
+                .map((it) -> it.update(new MementoGenerator(this.generator.getValue())))
                 .collect(Collectors.toList());
         }
     }
     
-    @Override
-    public long getValue() {
+    class MementoGenerator implements Generator {
+    
+        private long value;
         
-        return this.value;
-    }
+        public MementoGenerator(long value) {
+            this.value = value;
+        }
+        
+        @Override
+        public long getValue() {
+            return this.value;
+        }
     
-    @Override
-    public void setDiffusionStrategy(DiffusionStrategy strategy) {
-    
-    }
-    
-    @Override
-    public void setValue(long value) {
-    
+        @Override
+        public void setValue(long value) {
+        
+        }
     }
 }

@@ -26,7 +26,6 @@ public class GeneratorImpl implements Generator, Observable<ObserverAsync<Genera
     }
     
     
-    @Override
     public void setDiffusionStrategy(DiffusionStrategy strategy) {
         log.info("CHANGED STRATEGY : {} -> {}", this.strategy, strategy);
         this.strategy = strategy;
@@ -54,6 +53,11 @@ public class GeneratorImpl implements Generator, Observable<ObserverAsync<Genera
     public void notifyObservers() {
         this.strategy.execute();
         
+    }
+    
+    @Override
+    public String toString() {
+        return String.valueOf(this.value);
     }
     
     @Override

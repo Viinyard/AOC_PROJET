@@ -1,6 +1,5 @@
 package istic.aoc.m3.generator;
 
-import istic.aoc.m3.diffusion.DiffusionStrategy;
 
 /**
  * @author VinYarD
@@ -11,8 +10,6 @@ import istic.aoc.m3.diffusion.DiffusionStrategy;
 public interface Generator {
 	
 	long getValue();
-	
-	void setDiffusionStrategy(DiffusionStrategy strategy);
 	
 	void setValue(long value);
 }

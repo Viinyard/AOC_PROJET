@@ -25,7 +25,8 @@ public class Canal implements ObserverAsync<Generator>, Observable<Observer<Gene
     private final List<Observer<GeneratorAsync>> observers = new ArrayList<>();
 
     // doit obtenir le bon scheduler
-    private ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(10);
+    private ScheduledExecutorService executorServiceUpdate = new ScheduledThreadPoolExecutor(4);
+    private ScheduledExecutorService executorServiceGet = new ScheduledThreadPoolExecutor(4);
     
     private long value;
     
@@ -57,7 +58,7 @@ public class Canal implements ObserverAsync<Generator>, Observable<Observer<Gene
         
         log.info("UPDATE {} with {}ms latency", this.value,latency);
     
-        return executorService.schedule(() -> {
+        return executorServiceUpdate.schedule(() -> {
                 observers.forEach(o -> o.update(this));
                 return null;
             }
@@ -75,6 +76,6 @@ public class Canal implements ObserverAsync<Generator>, Observable<Observer<Gene
     
         log.info("GET {} with {}ms latency", this.value, latency);
     
-        return executorService.schedule(() -> this.value, latency, TimeUnit.MILLISECONDS);
+        return executorServiceGet.schedule(() -> this.value, latency, TimeUnit.MILLISECONDS);
     }
 }

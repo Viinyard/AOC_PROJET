@@ -2,15 +2,12 @@ package istic.aoc.m3.generator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
-import istic.aoc.m3.diffusion.DiffusionStrategy;
-import istic.aoc.m3.observer.Observable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import istic.aoc.m3.diffusion.DiffusionStrategy;
+import istic.aoc.m3.observer.Observable;
 import istic.aoc.m3.observer.ObserverAsync;
 
 public class GeneratorImpl implements Generator, Observable<ObserverAsync<Generator>> {

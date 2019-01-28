@@ -1,0 +1,12 @@
+@startuml
+
+interface DiffusionStrategy {
+    +configure(Generator generator, Observable observable)
+    +execute()
+}
+
+DiffusionStrategy <|-- AtomiqueStrategy
+DiffusionStrategy <|-- CausaleStrategy
+DiffusionStrategy <|-- SequentielStrategy
+
+@enduml
